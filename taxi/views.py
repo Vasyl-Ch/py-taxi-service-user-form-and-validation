@@ -9,6 +9,7 @@ from .forms import DriverLicenseUpdateForm, DriverCreationForm, CarForm
 from .models import Driver, Car, Manufacturer
 
 
+
 @login_required
 def index(request):
     """View function for the home page of the site."""
@@ -108,12 +109,14 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
 
 
+@login_required
 def assign_driver_to_car(request, pk):
     car = Car.objects.get(id=pk)
     car.drivers.add(request.user)
     return redirect("taxi:car-detail", pk=pk)
 
 
+@login_required
 def remove_driver_from_car(request, pk):
     car = Car.objects.get(id=pk)
     car.drivers.remove(request.user)
