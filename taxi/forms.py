@@ -1,9 +1,10 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm
-
-
 from django.contrib.auth import get_user_model
+
+
+from taxi.models import Car
 
 
 def validate_license_number(license_number: str) -> str | ValidationError:
@@ -41,10 +42,10 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
-        queryset=get_user_model().objects.all(),
+        queryset=Car.objects.all(),
         widget=forms.CheckboxSelectMultiple,
     )
 
     class Meta:
-        model = get_user_model()
+        model = Car
         fields = "__all__"
